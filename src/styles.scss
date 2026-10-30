@@ -1,1 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+/* Importar tipografía Montserrat (Light, Medium, Bold) */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap');
+
+/* Inyectar Tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Estilos base de la aplicación */
+html, body {
+  @apply font-montserrat bg-nutriflow-cream text-nutriflow-green-dark m-0 p-0 min-h-screen;
+}
+
+/* Clases globales para el modo CMS (Edición) */
+.editable-active {
+  @apply border-2 border-dashed border-nutriflow-yellow bg-white/60 cursor-text transition-all outline-none rounded p-1;
+  
+  &:hover {
+    @apply bg-white/90;
+  }
+}
+
+.editable-image-active {
+  @apply border-4 border-dashed border-nutriflow-yellow cursor-pointer opacity-80 hover:opacity-100 transition-all relative;
+  
+  &::after {
+    content: 'Cambiar Imagen';
+    @apply absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-nutriflow-green-dark text-white px-3 py-1 rounded text-sm font-bold shadow-lg pointer-events-none;
+  }
+}
