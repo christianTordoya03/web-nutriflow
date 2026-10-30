@@ -54,7 +54,7 @@ export class AppComponent {
     event.preventDefault();
     if (!this.cms.isAdmin()) {
       const pwd = prompt('Modo Administrador. Ingrese la contraseña:');
-      if (pwd === 'nutriflow2025') {
+      if (pwd === 'nutriflow2026') {
         this.cms.isAdmin.set(true);
       } else if (pwd) {
         alert('Contraseña incorrecta');
