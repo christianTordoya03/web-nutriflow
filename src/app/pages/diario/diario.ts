@@ -3,12 +3,11 @@ import { CommonModule } from '@angular/common';
 import { CmsStateService } from '../../core/services/cms-state';
 import { EditableTextComponent } from '../../shared/components/editable-text/editable-text';
 import { EditableImageComponent } from '../../shared/components/editable-image/editable-image';
-import { EditableVideoComponent } from '../../shared/components/editable-video/editable-video';
 
 @Component({
   selector: 'app-diario-page',
   standalone: true,
-  imports: [CommonModule, EditableTextComponent, EditableImageComponent, EditableVideoComponent],
+  imports: [CommonModule, EditableTextComponent, EditableImageComponent],
   template: `
     <div class="pt-24 pb-20 min-h-screen relative z-10 bg-nutriflow-cream">
       
@@ -92,9 +91,7 @@ import { EditableVideoComponent } from '../../shared/components/editable-video/e
                   <div class="space-y-8 relative">
                     <!-- BLOQUE 1: ¿PARA QUÉ SIRVE? -->
                     <div class="flex items-start gap-4">
-                      <div class="mt-1 p-2 bg-white rounded-full shadow-sm text-nutriflow-green-light flex-shrink-0">
-                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09l2.846.813-.813.2846a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" /></svg>
-                      </div>
+                      
                       <div>
                         <!-- TÍTULO EDITABLE -->
                         <app-editable-text [textValue]="product.benefitsTitle || '¿PARA QUÉ SIRVE?'" customClasses="block text-[#2c3e2e] font-black text-[11px] uppercase tracking-widest mb-1 opacity-60" (contentChanged)="cms.updateProduct(product.id, 'benefitsTitle', $event)"></app-editable-text>
@@ -105,9 +102,7 @@ import { EditableVideoComponent } from '../../shared/components/editable-video/e
 
                     <!-- BLOQUE 2: INSUMOS -->
                     <div class="flex items-start gap-4">
-                      <div class="mt-1 p-2 bg-white rounded-full shadow-sm text-nutriflow-green-light flex-shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" /></svg>
-                      </div>
+                      
                       <div>
                         <!-- TÍTULO EDITABLE -->
                         <app-editable-text [textValue]="product.ingredientsTitle || 'INSUMOS 100% ORGÁNICOS'" customClasses="block text-[#2c3e2e] font-black text-[11px] uppercase tracking-widest mb-1 opacity-60" (contentChanged)="cms.updateProduct(product.id, 'ingredientsTitle', $event)"></app-editable-text>
@@ -119,7 +114,7 @@ import { EditableVideoComponent } from '../../shared/components/editable-video/e
                   
                   <!-- FRASE FINAL EDITABLE -->
                   <div class="mt-12 flex items-center gap-3 pt-6 border-t border-[#2c3e2e]/10">
-                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-[#2c3e2e]"><path d="M17.5 3C15.5 3 13.5 4 12 5.5C10.5 4 8.5 3 6.5 3C3 3 0 6 0 9.5C0 14.5 5 18.5 12 24C19 18.5 24 14.5 24 9.5C24 6 21 3 17.5 3ZM12 21.5C6 16.5 2 13 2 9.5C2 7 4 5 6.5 5C8 5 9.5 6 11 7.5L12 8.5L13 7.5C14.5 6 16 5 17.5 5C20 5 22 7 22 9.5C22 13 18 16.5 12 21.5Z"/></svg>
+                    
                     <app-editable-text [textValue]="product.diarioQuote || 'hecho con amor, para tu bienestar.'" customClasses="block text-[10px] font-medium text-[#2c3e2e] uppercase tracking-wider opacity-80" (contentChanged)="cms.updateProduct(product.id, 'diarioQuote', $event)"></app-editable-text>
                   </div>
 

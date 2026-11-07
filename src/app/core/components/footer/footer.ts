@@ -12,8 +12,11 @@ import { CmsStateService } from '../../services/cms-state';
       <!-- ONDA SUPERIOR HERMÉTICA -->
       <div class="absolute bottom-full left-0 w-full overflow-hidden leading-[0] translate-y-[1px]">
         <svg class="relative block w-[calc(100%+1.3px)] h-[40px] md:h-[60px]" preserveAspectRatio="none" viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0,20 C480,100 960,-20 1440,40 L1440,105 L0,105 Z" class="fill-nutriflow-yellow"></path>
-          <path d="M0,35 C480,115 960,-5 1440,55 L1440,105 L0,105 Z" class="fill-nutriflow-green-dark"></path>
+          <!-- 2. Onda Amarilla Gruesa (Fondo) - Modificamos los valores Y para que asome -->
+          <path d="M0,35 C480,115 960,-45 1440,35 L1440,120 L0,120 Z" fill="#FCD34D"></path>
+          
+          <!-- 3. Onda Verde Oscura (Frente) -->
+          <path d="M0,60 C480,140 960,-20 1440,60 L1440,120 L0,120 Z" class="fill-nutriflow-green-dark"></path>
         </svg>
       </div>
 

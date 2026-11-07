@@ -2,6 +2,7 @@ import { Injectable, inject, signal } from '@angular/core';
 import { SupabaseService } from './supabase';
 
 export interface WebContent {
+  
   navbar: { logoUrl: string; scrolledLogoUrl?: string; topBannerText: string; instagramUrl: string; };
   promoModal: { title: string; subtitle: string; buttonText: string; isActive: boolean; bgImageUrl: string; };
   hero: { title: string; subtitle: string; buttonText: string; bgMediaUrl: string; };
@@ -11,9 +12,9 @@ export interface WebContent {
     packs: { id: number; tag: string; name: string; price: number; description: string; instruction: string; maxPacks: number; }[];
   };
   about: { title: string; text: string; imageUrl: string; };
-  testimonials: { id: number; username: string; videoUrl: string; title?: string; linkUrl?: string; }[];
+  testimonials: { id: number; username: string; videoUrl: string; posterUrl?: string; title?: string; linkUrl?: string; }[];
   blog: { title: string; buttonText: string; articles: { id: number; title: string; imageUrl: string; }[]; };
-  marquee: { text1: string; text2: string; text3: string; };
+  marquee: { text1: string; icon1?: string; text2: string; icon2?: string; text3: string; icon3?: string; };
   adventure: {
     title: string; step1: string; step2: string; step3: string; videoUrl: string; videoPosterUrl: string; 
     eventosTitle: string; eventos: { id: number; title: string; date: string; imageUrl: string }[];
@@ -185,7 +186,13 @@ export class CmsStateService {
       // INICIALIZADORES SEGUROS
       if (!loaded.navbar) loaded.navbar = { logoUrl: '/logo.png', scrolledLogoUrl: '/Logotipo_NFF_01.png', topBannerText: '', instagramUrl: 'https://instagram.com/nutriflowfit' };
       
-      if (!loaded.marquee) loaded.marquee = { text1: '100% COLD PRESS', text2: 'SIN AZÚCAR AÑADIDA', text3: 'HECHO EN PERÚ' };
+      if (!loaded.marquee) {
+        loaded.marquee = { text1: '100% COLD PRESS', icon1: '', text2: 'SIN AZÚCAR AÑADIDA', icon2: '', text3: 'HECHO EN PERÚ', icon3: '' };
+      }
+
+      if (loaded.marquee && typeof loaded.marquee.icon1 === 'undefined') {
+        loaded.marquee.icon1 = ''; loaded.marquee.icon2 = ''; loaded.marquee.icon3 = '';
+      }
       
       if (!loaded.planes) {
         loaded.planes = {
@@ -221,7 +228,12 @@ export class CmsStateService {
       }
       
       if (loaded.testimonials) {
-        loaded.testimonials = loaded.testimonials.map(t => ({ ...t, title: t.title || '¡Me encanta!', linkUrl: t.linkUrl || 'https://instagram.com' }));
+        loaded.testimonials = loaded.testimonials.map(t => ({ 
+          ...t, 
+          title: t.title || '¡Me encanta!', 
+          linkUrl: t.linkUrl || 'https://instagram.com',
+          posterUrl: t.posterUrl || '' // <-- Añadido soporte para portada
+        }));
       }
 
       if (!loaded.trashedMedia) loaded.trashedMedia = [];
