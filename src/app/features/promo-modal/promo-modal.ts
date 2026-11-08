@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CmsStateService } from '../../core/services/cms-state';
 import { EditableTextComponent } from '../../shared/components/editable-text/editable-text';
@@ -12,7 +12,6 @@ import { EditableImageComponent } from '../../shared/components/editable-image/e
     @if (showModal() && cms.content()?.promoModal?.isActive) {
       <div class="fixed inset-0 z-[150] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
         
-        <!-- CORRECCIÓN DE BORDES: Se eliminó el border-4 que causaba el conflicto gráfico, se dejó un ring sutil y sombra limpia -->
         <div class="relative w-full max-w-4xl bg-nutriflow-cream rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] ring-4 ring-white/80 overflow-hidden flex flex-col-reverse md:flex-row">
           
           <button (click)="closeModal()" class="absolute top-4 right-4 z-20 bg-white text-nutriflow-green-dark hover:bg-gray-100 rounded-full w-10 h-10 flex items-center justify-center font-bold text-xl shadow-md transition-colors">✕</button>
@@ -40,13 +39,40 @@ import { EditableImageComponent } from '../../shared/components/editable-image/e
     }
   `
 })
-export class PromoModalComponent {
+export class PromoModalComponent implements OnInit {
   cms = inject(CmsStateService);
-  showModal = signal(true);
-  closeModal() { this.showModal.set(false); }
-  updateField(field: string, value: string) { this.cms.updateContent('promoModal', field, value); }
+  
+  // Por defecto inicializa oculto para evitar "parpadeos" antes de comprobar la sesión
+  showModal = signal(false);
+
+  ngOnInit() {
+    // 1. Comprobamos si ya existe el registro en la pestaña actual
+    const promoYaVista = sessionStorage.getItem('promoNutriflowVista');
+
+    // 2. Si no la ha visto y además la promo está activa en el CMS
+    if (!promoYaVista) {
+      // 3. Pequeño retraso elegante de 1.5s antes de bombardear al usuario con el modal
+      setTimeout(() => {
+        this.showModal.set(true);
+        // Registramos que ya se mostró
+        sessionStorage.setItem('promoNutriflowVista', 'true');
+      }, 1500); 
+    }
+  }
+
+  closeModal() { 
+    this.showModal.set(false); 
+  }
+
+  updateField(field: string, value: string) { 
+    this.cms.updateContent('promoModal', field, value); 
+  }
+
   submitPromo(phone: string) {
-    if (!phone.trim()) { alert('Por favor, ingresa tu número para enviarte el código.'); return; }
+    if (!phone.trim()) { 
+      alert('Por favor, ingresa tu número para enviarte el código.'); 
+      return; 
+    }
     const text = `¡Hola Nutriflow! Quiero mi 15% de descuento. Mi número es: ${phone.trim()}`;
     window.open(`https://wa.me/51964211518?text=${encodeURIComponent(text)}`, '_blank');
     this.closeModal();
