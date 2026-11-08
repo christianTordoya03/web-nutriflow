@@ -10,9 +10,8 @@ import { EditableVideoComponent } from '../../shared/components/editable-video/e
   standalone: true,
   imports: [CommonModule, EditableTextComponent, EditableImageComponent, EditableVideoComponent],
   template: `
-    <!-- FRANJA VERDE CORREDIZA (Iconos adaptables al 100%) -->
+    <!-- FRANJA VERDE CORREDIZA (Iconos limpios y transparentes sin fondos que ensucien) -->
       <div class="w-full relative z-20 border-t-4 border-nutriflow-yellow overflow-hidden shadow-[inset_0_4px_6px_-1px_rgba(0,0,0,0.1)]">
-        <!-- Fondo con ligero efecto cristal -->
         <div class="absolute inset-0 bg-nutriflow-green-dark opacity-95"></div>
         <div class="absolute top-0 left-0 w-full h-[1px] bg-white/20"></div>
 
@@ -29,26 +28,27 @@ import { EditableVideoComponent } from '../../shared/components/editable-video/e
           <!-- ========================================== -->
           <div class="flex items-center gap-12 md:gap-24">
             
-            <!-- Item 1: Blanco Nítido -->
+            <!-- Item 1: 100% COLD PRESS -->
             <span class="flex items-center gap-4">
-              <!-- Contenedor ajustado con flex y overflow-hidden -->
-              <div class="w-6 h-6 md:w-8 md:h-8 relative bg-white/10 rounded-sm flex items-center justify-center overflow-hidden">
+              <!-- Eliminado bg-white/10. Ahora es transparente -->
+              <div class="w-6 h-6 md:w-8 md:h-8 relative bg-transparent flex items-center justify-center overflow-hidden">
                 <app-editable-image 
                   [imageUrl]="cms.content()?.marquee?.icon1 || ''" 
-                  containerClasses="absolute inset-0 w-full h-full p-1" 
-                  imgClasses="object-contain object-center w-full h-full" 
+                  containerClasses="absolute inset-0 w-full h-full" 
+                  imgClasses="object-contain object-center w-full h-full drop-shadow-sm" 
                   (imageChanged)="cms.updateMarquee('icon1', $event)">
                 </app-editable-image>
               </div>
               <app-editable-text [textValue]="cms.content()?.marquee?.text1 || '100% COLD PRESS'" customClasses="drop-shadow-sm" (contentChanged)="cms.updateMarquee('text1', $event)"></app-editable-text>
             </span>
             
-            <!-- Item 2: Amarillo Vibrante -->
+            <!-- Item 2: SIN AZÚCAR AÑADIDA -->
             <span class="flex items-center gap-4 text-[#FDE047] drop-shadow-[0_0_8px_rgba(253,224,71,0.4)]">
-              <div class="w-6 h-6 md:w-8 md:h-8 relative bg-[#FDE047]/10 rounded-sm flex items-center justify-center overflow-hidden">
+              <!-- Eliminado bg-[#FDE047]/10. Ahora es transparente -->
+              <div class="w-6 h-6 md:w-8 md:h-8 relative bg-transparent flex items-center justify-center overflow-hidden">
                 <app-editable-image 
                   [imageUrl]="cms.content()?.marquee?.icon2 || ''" 
-                  containerClasses="absolute inset-0 w-full h-full p-1" 
+                  containerClasses="absolute inset-0 w-full h-full" 
                   imgClasses="object-contain object-center w-full h-full" 
                   (imageChanged)="cms.updateMarquee('icon2', $event)">
                 </app-editable-image>
@@ -56,13 +56,14 @@ import { EditableVideoComponent } from '../../shared/components/editable-video/e
               <app-editable-text [textValue]="cms.content()?.marquee?.text2 || 'SIN AZÚCAR AÑADIDA'" (contentChanged)="cms.updateMarquee('text2', $event)"></app-editable-text>
             </span>
             
-            <!-- Item 3: Blanco Nítido -->
+            <!-- Item 3: HECHO EN PERÚ -->
             <span class="flex items-center gap-4">
-              <div class="w-6 h-6 md:w-8 md:h-8 relative bg-white/10 rounded-sm flex items-center justify-center overflow-hidden">
+              <!-- Eliminado bg-white/10. Ahora es transparente -->
+              <div class="w-6 h-6 md:w-8 md:h-8 relative bg-transparent flex items-center justify-center overflow-hidden">
                 <app-editable-image 
                   [imageUrl]="cms.content()?.marquee?.icon3 || ''" 
-                  containerClasses="absolute inset-0 w-full h-full p-1" 
-                  imgClasses="object-contain object-center w-full h-full" 
+                  containerClasses="absolute inset-0 w-full h-full" 
+                  imgClasses="object-contain object-center w-full h-full drop-shadow-sm" 
                   (imageChanged)="cms.updateMarquee('icon3', $event)">
                 </app-editable-image>
               </div>
@@ -72,16 +73,16 @@ import { EditableVideoComponent } from '../../shared/components/editable-video/e
           </div>
 
           <!-- ========================================== -->
-          <!-- SEGUNDO GRUPO (Bucle Infinito - Mismas clases) -->
+          <!-- SEGUNDO GRUPO (Bucle Infinito - Exactamente igual al primero) -->
           <!-- ========================================== -->
           <div class="flex items-center gap-12 md:gap-24 pl-12 md:pl-24">
             
             <span class="flex items-center gap-4">
-              <div class="w-6 h-6 md:w-8 md:h-8 relative bg-white/10 rounded-sm flex items-center justify-center overflow-hidden">
+              <div class="w-6 h-6 md:w-8 md:h-8 relative bg-transparent flex items-center justify-center overflow-hidden">
                 <app-editable-image 
                   [imageUrl]="cms.content()?.marquee?.icon1 || ''" 
-                  containerClasses="absolute inset-0 w-full h-full p-1" 
-                  imgClasses="object-contain object-center w-full h-full" 
+                  containerClasses="absolute inset-0 w-full h-full" 
+                  imgClasses="object-contain object-center w-full h-full drop-shadow-sm" 
                   (imageChanged)="cms.updateMarquee('icon1', $event)">
                 </app-editable-image>
               </div>
@@ -89,10 +90,10 @@ import { EditableVideoComponent } from '../../shared/components/editable-video/e
             </span>
             
             <span class="flex items-center gap-4 text-[#FDE047] drop-shadow-[0_0_8px_rgba(253,224,71,0.4)]">
-              <div class="w-6 h-6 md:w-8 md:h-8 relative bg-[#FDE047]/10 rounded-sm flex items-center justify-center overflow-hidden">
+              <div class="w-6 h-6 md:w-8 md:h-8 relative bg-transparent flex items-center justify-center overflow-hidden">
                 <app-editable-image 
                   [imageUrl]="cms.content()?.marquee?.icon2 || ''" 
-                  containerClasses="absolute inset-0 w-full h-full p-1" 
+                  containerClasses="absolute inset-0 w-full h-full" 
                   imgClasses="object-contain object-center w-full h-full" 
                   (imageChanged)="cms.updateMarquee('icon2', $event)">
                 </app-editable-image>
@@ -101,11 +102,11 @@ import { EditableVideoComponent } from '../../shared/components/editable-video/e
             </span>
             
             <span class="flex items-center gap-4">
-              <div class="w-6 h-6 md:w-8 md:h-8 relative bg-white/10 rounded-sm flex items-center justify-center overflow-hidden">
+              <div class="w-6 h-6 md:w-8 md:h-8 relative bg-transparent flex items-center justify-center overflow-hidden">
                 <app-editable-image 
                   [imageUrl]="cms.content()?.marquee?.icon3 || ''" 
-                  containerClasses="absolute inset-0 w-full h-full p-1" 
-                  imgClasses="object-contain object-center w-full h-full" 
+                  containerClasses="absolute inset-0 w-full h-full" 
+                  imgClasses="object-contain object-center w-full h-full drop-shadow-sm" 
                   (imageChanged)="cms.updateMarquee('icon3', $event)">
                 </app-editable-image>
               </div>
@@ -115,7 +116,6 @@ import { EditableVideoComponent } from '../../shared/components/editable-video/e
           </div>
         </div>
       </div>
-
     <!-- TESTIMONIOS (Añadido Soporte de Portada [allowPoster]="true") -->
     <section class="py-24 bg-nutriflow-cream relative z-10">
       <div class="container mx-auto px-6 max-w-7xl">

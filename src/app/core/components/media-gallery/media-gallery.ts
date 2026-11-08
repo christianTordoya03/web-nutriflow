@@ -40,7 +40,7 @@ import { CmsStateService } from '../../services/cms-state';
             @if (isUploading) {
               <div class="absolute inset-0 z-50 bg-white/80 flex flex-col items-center justify-center backdrop-blur-sm rounded-b-[2rem]">
                 <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-nutriflow-green-dark border-l-transparent mb-4"></div>
-                <p class="font-black text-nutriflow-green-dark uppercase tracking-widest text-sm">Subiendo a Supabase...</p>
+                <p class="font-black text-nutriflow-green-dark uppercase tracking-widest text-sm">Subiendo a NutriflowFit...</p>
               </div>
             }
 
