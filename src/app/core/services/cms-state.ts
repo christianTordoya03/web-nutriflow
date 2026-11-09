@@ -2,17 +2,22 @@ import { Injectable, inject, signal } from '@angular/core';
 import { SupabaseService } from './supabase';
 
 export interface WebContent {
-  
   navbar: { logoUrl: string; scrolledLogoUrl?: string; topBannerText: string; instagramUrl: string; };
   promoModal: { title: string; subtitle: string; buttonText: string; isActive: boolean; bgImageUrl: string; };
   hero: { title: string; subtitle: string; buttonText: string; bgMediaUrl: string; };
-  products: { id: number; name: string; claim: string; ingredientsTitle?: string; ingredients: string; benefitsTitle?: string; benefits: string; tag: string; bgColor: string; imageUrl: string; hoverImageUrl?: string; diarioQuote?: string; }[];
+  
+  // ¡Aquí agregamos los nuevos iconos opcionales para Diario!
+  products: { id: number; name: string; claim: string; ingredientsTitle?: string; ingredients: string; benefitsTitle?: string; benefits: string; tag: string; bgColor: string; imageUrl: string; hoverImageUrl?: string; diarioQuote?: string; icono1?: string; icono2?: string; icono3?: string; }[];
+  
   planes: {
     title: string; subtitle: string;
     packs: { id: number; tag: string; name: string; price: number; description: string; instruction: string; maxPacks: number; }[];
   };
   about: { title: string; text: string; imageUrl: string; };
-  testimonials: { id: number; username: string; videoUrl: string; posterUrl?: string; title?: string; linkUrl?: string; }[];
+  
+  // ¡Aquí agregamos la propiedad quote para los testimonios!
+  testimonials: { id: number; username: string; videoUrl: string; posterUrl?: string; title?: string; quote?: string; linkUrl?: string; }[];
+  
   blog: { title: string; buttonText: string; articles: { id: number; title: string; imageUrl: string; }[]; };
   marquee: { text1: string; icon1?: string; text2: string; icon2?: string; text3: string; icon3?: string; };
   adventure: {
@@ -42,7 +47,6 @@ export class CmsStateService {
   isEditMode = signal<boolean>(false);
   content = signal<WebContent | null>(null);
   
-  // 1. EL CARRITO AHORA NACE LEYENDO LA MEMORIA DEL DISCO
   cart = signal<string[]>(this.loadCartFromStorage());
   
   isCartOpen = signal<boolean>(false);
@@ -51,9 +55,6 @@ export class CmsStateService {
 
   constructor() { this.loadInitialData(); }
 
-  // ==========================================
-  // MOTOR DE PERSISTENCIA DEL CARRITO
-  // ==========================================
   private loadCartFromStorage(): string[] {
     if (typeof window !== 'undefined') {
       try {
@@ -73,7 +74,7 @@ export class CmsStateService {
   addToCart(productName: string) {
     this.cart.update(items => {
       const newItems = [...items, productName];
-      this.saveCartToStorage(newItems); // Guarda en disco
+      this.saveCartToStorage(newItems);
       return newItems;
     });
     this.isCartOpen.set(true);
@@ -85,7 +86,7 @@ export class CmsStateService {
       if (index > -1) { 
         const newItems = [...items]; 
         newItems.splice(index, 1); 
-        this.saveCartToStorage(newItems); // Actualiza el disco
+        this.saveCartToStorage(newItems);
         return newItems; 
       }
       return items;
@@ -100,24 +101,21 @@ export class CmsStateService {
     const text = `¡Hola Nutriflow! Quiero pedir lo siguiente:%0A- ${list}%0A%0A*Total: S/ ${total}*%0A%0A¿Me ayudas a coordinar el envío de mi pedido?`;
     window.open(`https://wa.me/51964211518?text=${text}`, '_blank');
     
-    // 2. VACIAR EL CARRITO DESPUÉS DE COMPRAR
     this.cart.set([]);
     this.saveCartToStorage([]);
     this.isCartOpen.set(false);
   }
 
-  // ==========================================
-  // GALERÍA Y FUNCIONES BASE
-  // ==========================================
   openGallery(callback: (url: string) => void) { this.onMediaSelected = callback; this.isGalleryOpen.set(true); }
   closeGallery() { this.isGalleryOpen.set(false); this.onMediaSelected = null; }
 
+  // Aquí he añadido más detalles al error en consola para futuras depuraciones
   private async saveToDB(updated: WebContent) {
     this.content.set(updated);
     const { error } = await this.supabase.client.from('web_settings').update({ content_data: updated }).eq('id', 1);
     if (error) {
-      console.error("Error al guardar:", error);
-      alert("⚠️ ERROR al guardar en base de datos.");
+      console.error("⛔ ERROR DETALLADO DE SUPABASE:", error.message, error.details, error.hint);
+      alert("⚠️ ERROR al guardar en base de datos. Revisa la consola (F12) para más detalles.");
     }
   }
 
@@ -129,7 +127,7 @@ export class CmsStateService {
       const { error: uploadError } = await this.supabase.client.storage.from('media').upload(filePath, file);
       if (uploadError) {
         console.error('Error subiendo a Storage:', uploadError);
-        alert('Error al subir el video. ¿Creaste el bucket "media" en Supabase en modo Público?');
+        alert('Error al subir el archivo.');
         return null;
       }
       const { data } = this.supabase.client.storage.from('media').getPublicUrl(filePath);
@@ -183,7 +181,6 @@ export class CmsStateService {
     if (data && data.content_data) {
       const loaded = data.content_data as WebContent;
       
-      // INICIALIZADORES SEGUROS
       if (!loaded.navbar) loaded.navbar = { logoUrl: '/logo.png', scrolledLogoUrl: '/Logotipo_NFF_01.png', topBannerText: '', instagramUrl: 'https://instagram.com/nutriflowfit' };
       
       if (!loaded.marquee) {
@@ -223,7 +220,10 @@ export class CmsStateService {
           ...p, 
           diarioQuote: p.diarioQuote || 'hecho con amor,\npara tu bienestar.',
           benefitsTitle: p.benefitsTitle || '¿PARA QUÉ SIRVE?',
-          ingredientsTitle: p.ingredientsTitle || 'INSUMOS 100% ORGÁNICOS'
+          ingredientsTitle: p.ingredientsTitle || 'INSUMOS 100% ORGÁNICOS',
+          icono1: p.icono1 || '',
+          icono2: p.icono2 || '',
+          icono3: p.icono3 || ''
         }));
       }
       
@@ -231,8 +231,9 @@ export class CmsStateService {
         loaded.testimonials = loaded.testimonials.map(t => ({ 
           ...t, 
           title: t.title || '¡Me encanta!', 
+          quote: t.quote || 'Escribe aquí la reseña o comentario de esta persona.',
           linkUrl: t.linkUrl || 'https://instagram.com',
-          posterUrl: t.posterUrl || '' // <-- Añadido soporte para portada
+          posterUrl: t.posterUrl || '' 
         }));
       }
 
