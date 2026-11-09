@@ -116,48 +116,94 @@ import { EditableVideoComponent } from '../../shared/components/editable-video/e
           </div>
         </div>
       </div>
-    <!-- TESTIMONIOS (Añadido Soporte de Portada [allowPoster]="true") -->
-    <section class="py-24 bg-nutriflow-cream relative z-10">
+   <!-- TESTIMONIOS (Card Unificada con Color Dinámico y Offset) -->
+    <section class="py-24 bg-nutriflow-cream relative z-10 font-montserrat">
       <div class="container mx-auto px-6 max-w-7xl">
         <h2 class="text-4xl md:text-5xl font-black text-center text-nutriflow-green-dark tracking-tighter uppercase mb-4">La Tribu Nutriflow</h2>
         <p class="text-center text-gray-500 font-bold mb-16">Lo que dice nuestra comunidad en redes.</p>
-        <div class="flex overflow-x-auto gap-8 pb-8 snap-x snap-mandatory scroll-smooth justify-start md:justify-center items-stretch" style="scrollbar-width: none;">
-          @for (testimonio of cms.content()?.testimonials; track testimonio.id) {
-            <div class="min-w-[260px] md:w-[300px] h-[450px] md:h-[500px] flex-shrink-0 snap-center relative rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white bg-black group cursor-pointer">
+        
+        <!-- Contenedor scrollable horizontal (agregamos padding top/bottom para la animación) -->
+        <div class="flex overflow-x-auto gap-8 md:gap-12 pt-4 pb-16 snap-x snap-mandatory scroll-smooth justify-start lg:justify-center items-stretch px-4" style="scrollbar-width: none;">
+          
+          <!-- Agregamos let i = $index para poder alternar los colores -->
+          @for (testimonio of cms.content()?.testimonials; track testimonio.id; let i = $index) {
+            
+            <!-- CONTENEDOR PADRE RELATIVO (Agrupa la tarjeta y el efecto de color) -->
+            <div class="relative flex flex-col flex-shrink-0 snap-center min-w-[300px] w-[300px] md:w-[340px] group cursor-pointer">
               
-              <!-- COMPONENTE DE VIDEO ACTUALIZADO CON PORTADA -->
-              <app-editable-video 
-                 [mediaUrl]="testimonio.videoUrl" 
-                 [posterUrl]="testimonio.posterUrl || ''"
-                 [allowPoster]="true"
-                 mediaClasses="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" 
-                 (mediaChanged)="cms.updateTestimonial(testimonio.id, $event)"
-                 (posterChanged)="cms.updateTestimonialField(testimonio.id, 'posterUrl', $event)">
-              </app-editable-video>
-              
-              <div class="absolute inset-0 z-20 pointer-events-none flex flex-col justify-between p-6 bg-gradient-to-t from-black/80 via-transparent to-transparent">
-                <div class="self-end bg-white/20 backdrop-blur-md rounded-full p-2"><svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+              <!-- 🔴 EL EFECTO DE COLOR (Fondo Desfasado) -->
+              <!-- Cambia de color dependiendo de si es par o impar, y se expande al hacer hover -->
+              <div class="absolute inset-0 rounded-[2.5rem] transform translate-x-3 translate-y-3 md:translate-x-4 md:translate-y-4 transition-transform duration-500 group-hover:translate-x-6 group-hover:translate-y-6"
+                   [class.bg-nutriflow-yellow]="i % 2 === 0"
+                   [class.bg-nutriflow-green-light]="i % 2 !== 0">
+              </div>
+
+              <!-- ⚪ LA TARJETA PRINCIPAL BLANCA (Va por encima del color) -->
+              <div class="relative flex flex-col h-full bg-white rounded-[2.5rem] overflow-hidden border-[6px] border-white z-10 transform transition-transform duration-500 group-hover:-translate-y-1 group-hover:-translate-x-1">
                 
-                <div class="flex flex-col gap-2 mt-auto">
-                  <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-nutriflow-yellow flex items-center justify-center border-2 border-white text-nutriflow-green-dark font-black flex-shrink-0">@</div>
-                    <a [href]="cms.isEditMode() ? 'javascript:void(0)' : (testimonio.linkUrl || '#')" 
-                       (click)="handleLinkClick($event)"
-                       [target]="cms.isEditMode() ? '_self' : '_blank'" 
-                       class="text-white/90 hover:text-white font-black text-sm md:text-base tracking-wide transition-colors pointer-events-auto flex items-center gap-1 group/link">
-                      <app-editable-text 
-                        [textValue]="testimonio.username || '@usuario'" 
-                        customClasses="inline-block border-b border-transparent group-hover/link:border-white transition-colors" 
-                        (contentChanged)="cms.updateTestimonialField(testimonio.id, 'username', $event)">
-                      </app-editable-text>
-                    </a>
-                  </div>
+                <!-- Mitad Superior: El Video (Reel) -->
+                <div class="relative w-full h-[400px] md:h-[460px] bg-black overflow-hidden rounded-[2rem]">
                   
-                  @if (cms.isEditMode()) {
-                    <button (click)="editTestimonialLink(testimonio.id, testimonio.linkUrl || '')" class="pointer-events-auto bg-white/20 text-white text-[9px] px-3 py-1 rounded-full uppercase tracking-widest backdrop-blur-sm self-start hover:bg-white/40 transition-colors border border-white/30 ml-[52px]">
-                      🔗 Cambiar Enlace Web
-                    </button>
-                  }
+                  <app-editable-video 
+                     [mediaUrl]="testimonio.videoUrl" 
+                     [posterUrl]="testimonio.posterUrl || ''"
+                     [allowPoster]="true"
+                     mediaClasses="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" 
+                     (mediaChanged)="cms.updateTestimonial(testimonio.id, $event)"
+                     (posterChanged)="cms.updateTestimonialField(testimonio.id, 'posterUrl', $event)">
+                  </app-editable-video>
+                  
+                  <!-- Gradiente para el texto sobre el video -->
+                  <div class="absolute inset-0 z-20 pointer-events-none flex flex-col justify-between p-5 bg-gradient-to-t from-black/80 via-transparent to-transparent">
+                    <div class="self-end bg-white/20 backdrop-blur-md rounded-full p-2 border border-white/10 shadow-sm">
+                      <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
+                    
+                    <div class="flex flex-col gap-2 mt-auto">
+                      <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-full bg-nutriflow-yellow flex items-center justify-center border-2 border-white text-nutriflow-green-dark font-black flex-shrink-0 shadow-md">@</div>
+                        <a [href]="cms.isEditMode() ? 'javascript:void(0)' : (testimonio.linkUrl || '#')" 
+                           (click)="handleLinkClick($event)"
+                           [target]="cms.isEditMode() ? '_self' : '_blank'" 
+                           class="text-white font-black text-sm md:text-base tracking-wide transition-colors pointer-events-auto flex items-center gap-1 group/link drop-shadow-md">
+                          <app-editable-text 
+                             [textValue]="testimonio.username || 'usuario'" 
+                             customClasses="inline-block border-b border-transparent group-hover/link:border-white transition-colors" 
+                             (contentChanged)="cms.updateTestimonialField(testimonio.id, 'username', $event)">
+                          </app-editable-text>
+                        </a>
+                      </div>
+                      
+                      @if (cms.isEditMode()) {
+                        <button (click)="editTestimonialLink(testimonio.id, testimonio.linkUrl || '')" class="pointer-events-auto bg-white/20 text-white text-[9px] px-3 py-1 rounded-full uppercase tracking-widest backdrop-blur-sm self-start hover:bg-white/40 transition-colors border border-white/30 ml-12">
+                          🔗 Cambiar Enlace
+                        </button>
+                      }
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Mitad Inferior: Bloque de Texto -->
+                <div class="p-6 md:p-8 text-left bg-white flex-grow flex flex-col justify-start">
+                  
+                  <!-- Detalle de color interno para romper el blanco -->
+                  <div class="w-12 h-1.5 rounded-full mb-5"
+                       [class.bg-nutriflow-green-light]="i % 2 === 0"
+                       [class.bg-nutriflow-yellow]="i % 2 !== 0">
+                  </div>
+
+                  <app-editable-text 
+                    [textValue]="$any(testimonio).title || '¡ME ENCANTA!'" 
+                    customClasses="block text-[24px] md:text-[28px] font-black text-nutriflow-green-dark tracking-tighter uppercase mb-3 leading-[1.1]" 
+                    (contentChanged)="cms.updateTestimonialField(testimonio.id, 'title', $event)">
+                  </app-editable-text>
+                  
+                  <app-editable-text 
+                    [textValue]="$any(testimonio).quote || 'Escribe aquí la reseña o comentario de esta persona.'" 
+                    customClasses="block text-nutriflow-green-dark/70 font-medium text-[15px] leading-relaxed" 
+                    (contentChanged)="cms.updateTestimonialField(testimonio.id, 'quote', $event)">
+                  </app-editable-text>
+                  
                 </div>
               </div>
             </div>
@@ -165,7 +211,6 @@ import { EditableVideoComponent } from '../../shared/components/editable-video/e
         </div>
       </div>
     </section>
-
     <!-- BLOG SECTION (Igual que antes) -->
     <section class="pt-28 pb-36 bg-nutriflow-green-dark relative z-0">
       

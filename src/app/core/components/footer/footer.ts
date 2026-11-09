@@ -9,14 +9,16 @@ import { CmsStateService } from '../../services/cms-state';
   template: `
     <footer class="bg-nutriflow-green-dark pt-6 pb-6 relative z-20">
       
-      <!-- ONDA SUPERIOR HERMÉTICA -->
+      <!-- ONDA SUPERIOR HERMÉTICA Y PARALELA -->
       <div class="absolute bottom-full left-0 w-full overflow-hidden leading-[0] translate-y-[1px]">
-        <svg class="relative block w-[calc(100%+1.3px)] h-[40px] md:h-[60px]" preserveAspectRatio="none" viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg">
-          <!-- 2. Onda Amarilla Gruesa (Fondo) - Modificamos los valores Y para que asome -->
-          <path d="M0,35 C480,115 960,-45 1440,35 L1440,120 L0,120 Z" fill="#FCD34D"></path>
+        <!-- Ajustamos el viewBox a 140 para que la curva encaje a la perfección -->
+        <svg class="relative block w-[calc(100%+1.3px)] h-[80px] md:h-[140px]" preserveAspectRatio="none" viewBox="0 0 1440 140" xmlns="http://www.w3.org/2000/svg">
           
-          <!-- 3. Onda Verde Oscura (Frente) -->
-          <path d="M0,60 C480,140 960,-20 1440,60 L1440,120 L0,120 Z" class="fill-nutriflow-green-dark"></path>
+          <!-- 1. Onda Amarilla (Fondo): Curva base suave -->
+          <path d="M0,20 C480,120 960,-20 1440,20 L1440,140 L0,140 Z" fill="#FCD34D"></path>
+          
+          <!-- 2. Onda Verde (Frente): Curva matemáticamente paralela (+50 exactos en cada eje Y) -->
+          <path d="M0,70 C480,170 960,30 1440,70 L1440,140 L0,140 Z" class="fill-nutriflow-green-dark"></path>
         </svg>
       </div>
 
